@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="stylesheet" href="styles.css">
+    <title>WERpapers - Open Access Repository</title>
+    <script src="commonhtml.js"> </script>
+</head>
+<body>
+    <header>
+        
+    </header>
+   <script src="script.js"></script>
+    <script>
+        var werdata = {};
+        var xmlFile = "XMLs/conferences.xml";
+        fetch(xmlFile);
+        xmlFile = "XMLs/papers.xml";
+        fetch(xmlFile);
+        xmlFile = "XMLs/masthead.xml";
+        fetch(xmlFile);
+        
+    </script>
+    
+    <section class="description">
+        <h1>WERpapers - Open Access Repository</h1>
+        <h3>WER - Workshop on Requirements Engineering</h3>
+        <p>WERpapers is an open-access repository, that catalogs proceedings and articles spanning across every edition of the Requirements Engineering Workshop (WER). 
+            This workshop has been held annually since 1998. Its purpose is to promote meaningful discussions among <b>English</b>, <b>Portuguese</b>, and <b>Spanish</b> speakers, 
+            fostering a collaborative environment to develop cutting-edge solutions within the realm of requirements engineering.</p>
+        <p>WERpapers was originally created in 2005 at <a href="https://www.inf.puc-rio.br/">DI - PUC-Rio</a>. 
+        The <a href="https://portal.issn.org/resource/ISSN/2675-0066">ISSN (2675-0066)</a> was registered by PUC-Rio Editora, which also provided DOIs for several years between 1998 and 2018. 
+            Since 2024, WERpapers has been operated and maintained by <a href="https://dimap.ufrn.br">Dimap - UFRN</a>. Editora Even3 has provided DOIs since 2019. 
+            Werpapers articles are indexed in <a href="https://dblp.org/db/conf/wer/index.html">DBLP</a> and <a href="https://scholar.google.com/scholar?q=WER%20workshop%20on%20requirements%20engineering">GoogleScholar</a>, and for some years they are also indexed in Scopus. 
+            In order to improve indexing, this site is also available in a <a href="papers/html_for_robots/index_for_robots.html">pure HTML</a> version.</p>
+        <p>To access the knowledge encapsulated in the workshop's proceedings, navigate through the comprehensive list below or employ the search form.
+        </p>
+    </section>
+<hr>
+    <section class="editions">
+        <h3>WER Editions</h3>
+        <ul class="menu-links">
+            <li><a href="edition.html?conference=WER2024">WER2024</a></li>
+            <li><a href="edition.html?conference=WER2023">WER2023</a></li>
+            <li><a href="edition.html?conference=WER2022">WER2022</a></li>
+            <li><a href="edition.html?conference=WER2021">WER2021</a></li>
+            <li><a href="edition.html?conference=WER2020">WER2020</a></li>
+            <li><a href="edition.html?conference=WER2019">WER2019</a></li>
+            <li><a href="edition.html?conference=WER2018">WER2018</a></li>
+            <li><a href="edition.html?conference=WER2017">WER2017</a></li>
+            <li><a href="edition.html?conference=WER2016">WER2016</a></li>
+            <li><a href="edition.html?conference=WER2015">WER2015</a></li>
+            <li><a href="edition.html?conference=WER2014">WER2014</a></li>
+            <li><a href="edition.html?conference=WER2013">WER2013</a></li>
+            <li><a href="edition.html?conference=WER2012">WER2012</a></li>
+            <li><a href="edition.html?conference=WER2011">WER2011</a></li>
+            <li><a href="edition.html?conference=WER2010">WER2010</a></li>
+            <li><a href="edition.html?conference=WER2009">WER2009</a></li>
+            <li><a href="edition.html?conference=WER2008">WER2008</a></li>
+            <li><a href="edition.html?conference=WER2007">WER2007</a></li>
+            <li><a href="edition.html?conference=WER2006">WER2006</a></li>
+            <li><a href="edition.html?conference=WER2005">WER2005</a></li>
+            <li><a href="edition.html?conference=WER2004">WER2004</a></li>
+            <li><a href="edition.html?conference=WER2003">WER2003</a></li>
+            <li><a href="edition.html?conference=WER2002">WER2002</a></li>
+            <li><a href="edition.html?conference=WER2001">WER2001</a></li>
+            <li><a href="edition.html?conference=WER2000">WER2000</a></li>
+            <li><a href="edition.html?conference=WER1999">WER1999</a></li>
+            <li><a href="edition.html?conference=WER1998">WER1998</a></li>
+        </ul>
+    </section>
+<hr>
+    <section class="search">
+        <h3>Search in WERpapers</h3>
+        <form action="https://google.com/cse" method="get">
+            <input type="hidden" name="cx" value="9572b69e5e545478c">
+            <input type="hidden" name="ie" value="UTF-8">
+            <input type="text" name="q" size="31" id="searchText">
+            <input type="submit" name="sa" value="Search">
+        </form>
+        
+       <div class="gcse-search"></div>
+    </section>
+<hr>
+
+    <script>
+        var xmlFile = "XMLs/conferences.xml";
+        fetch(xmlFile,{
+            method: 'GET',
+            mode: 'no-cors'
+        })
+            .then((response) => response.text())
+            .then((xml) => {
+                var parser = new DOMParser();
+                var xmlDoc = parser.parseFromString(xml, "text/xml");
+                var rootElement = xmlDoc.documentElement;
+                var data = xmlDoc.querySelectorAll("data");
+                data.forEach(function (dataElement) {
+                // Conference information
+                    var name_conference = dataElement.querySelector("name_conference") ? dataElement.querySelector("name_conference").textContent : "";
+                    var description = dataElement.querySelector("description") ? dataElement.querySelector("description").textContent : "";
+                    var webpage = dataElement.querySelector("url") ? dataElement.querySelector("url").textContent : "";
+                    var conferenceContainer = document.querySelector(".edition_list");
+                    var infoList = conferenceContainer.querySelector("ul");
+                    
+                    infoList.innerHTML += 
+                    '<li>'+name_conference+' - '+description+' - <a href="edition.html?conference='+name_conference+'">[WERpapers]</a>  <a href="'+webpage+'">[Conference Website]</a></li>' 
+                    
+                });
+            }).catch((error) => console.error("Error fetching XML:", error));
+    </script> 
+    <section class="edition_list">
+        <h3>Edition Details</h3>
+        <ul>
+        </ul>
+    </section>
+
+    <footer>
+        
+    </footer>
+</body>
+</html>
