@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerador de Proceedings - WERpapers</title>
+
+  <!-- Bibliotecas JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <!-- Estilo da Página -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2em;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #003366;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 1em;
+      display: block;
+    }
+    input, select, button {
+      width: 100%;
+      max-width: 600px;
+      padding: 0.5em;
+      margin-top: 0.5em;
+      margin-bottom: 1em;
+      font-size: 1em;
+    }
+    iframe {
+      width: 100%;
+      height: 600px;
+      border: 1px solid #ccc;
+      display: none;
+      margin-top: 1em;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Gerador de Páginas WERpapers</h1>
+  <p>
+    Carregue os arquivos CSV com os dados dos <strong>artigos</strong>, <strong>conferências</strong> e <strong>comitês</strong>.
+    Os caminhos para o CSS e os PDFs estão pré-definidos e podem ser alterados no código.
+  </p>
+
+  <!-- Formulário de entrada -->
+  <label>Arquivo de artigos (.csv):</label>
+  <input type="file" id="articlesFile" accept=".csv">
+
+  <label>Arquivo de conferências (.csv):</label>
+  <input type="file" id="conferencesFile" accept=".csv">
+
+  <label>Arquivo de comitês (.csv):</label>
+  <input type="file" id="mastheadFile" accept=".csv">
+
+  <label>Selecionar conferência:</label>
+  <select id="conferenceFilter">
+    <option value="__all__">🔹 Todas</option>
+  </select>
+
+  <!-- Botão de simulação -->
+  <button onclick="simularVisualizacao()">🔍 Simular Páginas</button>
+
+  <!-- Pré-visualizações lado a lado -->
+  <div style="display: flex; gap: 2em; flex-wrap: wrap; margin-top: 2em;">
+    <div style="flex: 1; min-width: 300px;">
+      <h3>Exemplo de Artigo</h3>
+      <iframe id="previewArticleFrame"></iframe>
+    </div>
+    <div style="flex: 1; min-width: 300px;">
+      <h3>Exemplo de Proceedings</h3>
+      <iframe id="previewProceedingsFrame"></iframe>
+    </div>
+  </div>
+
+  <!-- Botão de geração final -->
+  
+  <button onclick="gerarEzipar()">📦 Gerar e Baixar ZIP</button>
+
+  <!-- Templates HTML -->
+  <template id="template-header">
+<header>
+  <div class="logo">
+    <a href="index.html"><img src="images/WERPapers_h.png" alt="WERpapers Logo" class="logo"></a>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/guidelines.html">Guidelines</a></li>
+      <li><a href="/committee.html">Masthead</a></li>
+      <li><a target="_blank" href="https://dblp.org/db/conf/wer/index.html">DBLP</a></li>
+    </ul>
+  </nav>
+</header>
+  </template>
+
+  <template id="template-footer">
+<footer>
+  <hr/> 
+  <div class="footer-content">
+    <div class="footer-logo"><a href="index.html" class="logo">WERpapers</a></div>
+    <ul class="footer-menu">
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/committee.html">Masthead</a></li>
+      <li><a href="/guidelines.html">Guidelines</a></li>
+      <li><a href="https://dblp.org/db/conf/wer/index.html">DBLP</a></li>
+      <li><a href="mailto:papers.wer@gmail.com">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+  </template>
+
+  <template id="template-conference-list">
+    <hr/> 
+    <section class="editions">
+      <h3>WER Editions</h3>
+      <ul id="wer-editions-list" class="menu-links">
+        ${Conferences_list}
+      </ul>
+  </template>
+
+  <template id="template-article-metadata">
+<meta name="citation_title" content="${artigo.title}">
+${author}
+<meta name="citation_publication_date" content="${artigo.year}">
+<meta name="citation_language" content="${artigo.language}">
+<meta name="citation_doi" content="${artigo.doi}">
+<meta name="citation_conference_title" content="${artigo.conference_name} - ${artigo.conference_title}">
+<meta name="citation_issn" content="${artigo.issn}">
+<meta name="citation_isbn" content="${artigo.isbn}">
+<meta name="citation_keywords" content="${artigo.keywords}">
+<meta name="citation_pdf_url" content="${pdfUrl}">
+<meta name="citation_section" content="${artigo.session}">
+<meta name="DC.Title" content="${artigo.title}" lang="${artigo.language}">
+<meta name="DC.Title" content="${artigo.title_en}" lang="en">
+<meta name="DC.Date" content="${artigo.year}">
+<meta name="DC.Language" content="${artigo.language}">
+<meta name="DC.Identifier" content="${artigo.doi}">
+<meta name="DC.Source" content="${artigo.conference_name} - ${artigo.conference_title}">
+<meta name="DC.Subject" content="${artigo.keywords}" lang="${artigo.language}">
+<meta name="DC.Subject" content="${artigo.keywords_en}" lang="en">
+<meta name="DC.Description" content="${artigo.abstract_deco}" lang="${artigo.language}">
+<meta name="DC.Description" content="${artigo.abstract_en}" lang="en">
+<meta name="DC.Format" content="application/pdf">
+<meta name="DC.Relation" content="${pdfUrl}">
+  </template>
+
+  <template id="template-proceeding-metadata">
+<meta name="dc.identifier" content="${conf.isbn}" />
+<meta name="dc.source" content="${conf.conference_title}" />
+<meta name="dc.date" content="${conf.year}" />
+<meta name="citation_isbn" content="${conf.isbn}" />
+<meta name="citation_conference_title" content="${conf.conference_title}" />
+<meta name="citation_year" content="${conf.year}" />
+
+  </template>
+
+  <template id="template-article-main">
+<section class="paper_details">
+  <h2>${artigo.conference_name} - ${conf.conference_title}</h2>
+  <h3>${artigo.title}</h3>
+  <p class="author">${artigo.author}</p>
+  <p>${artigo.doi}</p>
+  <p><a target="_blank" href="${pdfUrl}">PDF</a> <a target="_blank" href="${scholarUrl}">Scholar</a></p>
+  <h4>Abstract</h4>
+  <p class="abstract">${artigo.abstract_deco}</p>
+</section>
+<hr/>
+<section class="links">
+  <h5>How to cite</h5>
+  <ul>
+    <li><strong>LNCS - </strong>${Citation_style_lncs}</li>
+    <li><strong>IEEE - </strong>${Citation_style_ieee}</li>
+    <li><strong>ACM - </strong>${Citation_style_acm}</li>
+    <li><strong>SBC - </strong>${Citation_style_sbc}</li>
+    <li><strong>BIB - </strong><pre>${Citation_style_bib}</pre></li>
+  </ul>
+</section>
+  </template>
+
+  <template id="template-proceeding-main">
+<section class="edition_details">
+  <h2>${conf.conference_name}</h2>
+  <h3>${conf.conference_title}</h3>
+  <ul class="edition-info">
+    <li>${conf.city}, ${conf.country}, ${conf.days} ${conf.month} ${conf.year}</li>
+    <li>ISSN: ${conf.issn}</li>
+    <li>ISBN: ${conf.isbn}</li>
+    <li>Publisher: ${conf.publisher}</li>
+  </ul>
+  <h4>Edited by</h4>
+    <ul class="editors"><li>${conf.editor}</li></ul>
+  <h4>Editorial</h4> 
+    <ul><li>Editorial board is at the bottom of this page. Other committees and organizers are listed in the preface or on the event webpage.</li></ul>
+        </section>
+</section>
+
+<hr/>
+<section class="content_table">
+  <h3>Table of Contents</h3>
+  ${artigosHTML}
+</section>
+
+<hr/>
+<section class="masthead_table">
+  <h3>Editorial Board</h3>
+  ${comiteHTML}
+</section>
+  </template>
+
+  <!-- Script inicial de configuração -->
+
+<script>
+  const CONFIG = {
+    cssPath: "https://werpapers.dimap.ufrn.br/styles.css",
+    pdfBasePath: "../papers",
+    proceedingsBasePath: ""
+  };
+
+  let articles = [], conferences = [], committee = [];
+
+  function parseCsv(file) {
+    return new Promise(resolve => {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: results => resolve(results.data)
+      });
+    });
+  }
+
+  function atualizarFiltroConferencias() {
+    const select = document.getElementById('conferenceFilter');
+    const nomes = [...new Set(articles.map(a => a.conference_name).filter(Boolean))].sort();
+    select.innerHTML = '<option value="__all__">🔹 Todas</option>' +
+      nomes.map(n => `<option value="${n}">${n}</option>`).join('');
+  }
+
+  document.getElementById('articlesFile').addEventListener('change', async e => {
+    articles = await parseCsv(e.target.files[0]);
+    atualizarFiltroConferencias();
+  });
+
+  document.getElementById('conferencesFile').addEventListener('change', async e => {
+    conferences = await parseCsv(e.target.files[0]);
+  });
+
+  document.getElementById('mastheadFile').addEventListener('change', async e => {
+    committee = await parseCsv(e.target.files[0]);
+  });
+
+  function escapeHTML(str) {
+    return (str || '').replace(/[&<>"']/g, tag => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[tag]));
+  }
+
+  function gerarListaConferencias() {
+    const nomesUnicos = [...new Set(conferences.map(c => c.conference_name).filter(Boolean))].sort();
+    return nomesUnicos.map(n => `<li><a href="../${CONFIG.proceedingsBasePath}/${n}/${n}.html">${n}</a></li>`).join('\n');
+  }
+
+  function gerarCitacoesFormatadas(artigo, conf) {
+   
+    const autoresOriginais = (artigo.author || "").split(";").map(a => a.trim()).filter(Boolean);
+
+    const nomesBib = autoresOriginais.map(nome => {
+      const partes = nome.split(" ");
+      const sobrenome = partes.pop();
+      const iniciais = partes.map(n => n[0].toUpperCase() + '.').join(' ');
+      return `${sobrenome}, ${iniciais}`;
+    });
+
+    const nomesPadrao = autoresOriginais.map(nome => {
+      const partes = nome.split(" ");
+      const sobrenome = partes.pop();
+      const iniciais = partes.map(n => n[0].toUpperCase() + '.').join(' ');
+      return `${iniciais} ${sobrenome}`;
+    });
+
+    const nomesACM = autoresOriginais.map(nome => {
+      const partes = nome.split(" ");
+      const sobrenome = partes.pop();
+      const iniciais = partes.map(n => `${n[0].toUpperCase()}.`).join('');
+      return `${sobrenome}, ${iniciais}`;
+    });
+
+    const nomesSBC = autoresOriginais.map(nome => {
+      const partes = nome.trim().split(" ");
+      const sobrenome = partes.pop().toUpperCase();
+      const prenomes = partes.map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()).join(' ');
+      return `${sobrenome}, ${prenomes}`;
+    });
+
+    const joinedLNCS = nomesPadrao.join(', ');
+    const joinedIEEE = nomesPadrao.join(', ');
+    const joinedACM = nomesACM.join(', ');
+    const joinedSBC = nomesSBC.join('; ');
+    const joinedBib = nomesBib.join(' and ');
+   return {
+      lncs: `${joinedLNCS}: <i>${artigo.title}</i>. In: Proceedings of the ${artigo.conference_name}-${conf.conference_title}, ${artigo.year}. ${artigo.doi}`,
+      ieee: `${joinedIEEE}, '${artigo.title}', ${artigo.conference_name}-${conf.conference_title}, ${artigo.year}. ${artigo.doi}`,
+      acm: `${joinedACM}. ${artigo.year}. ${artigo.title}. In ${artigo.conference_name}-${conf.conference_title}. ${artigo.doi}`,
+      sbc: `${joinedSBC}. ${artigo.title}. In: ${artigo.conference_name}-${conf.conference_title}, ${artigo.year}. ${artigo.doi}`,
+      bib: `@inproceedings{wer${artigo.id},\n  author = {${joinedBib}},\n  title = {${artigo.title}},\n  booktitle = {Proceedings of the ${artigo.conference_name}-${conf.conference_title}},\n  year = {${artigo.year}},\n  issn = {${conf.issn}},\n  isbn = {${conf.isbn}},\n  doi = {${artigo.doi}}\n}`
+};
+
+  }
+
+  function gerarItemListaArtigo(a) {
+    const linkArtigo = `../${CONFIG.proceedingsBasePath}/${a.conference_name}/wer${a.id}.html`;
+    const pdf = `${CONFIG.pdfBasePath}/${a.conference_name}/${a.file_name}`;
+    const scholar = `https://scholar.google.com/scholar?q=${encodeURIComponent(a.title)}`;
+    return `<li>
+      <a href="${linkArtigo}" target="_blank">${escapeHTML(a.title)}</a>  <a href="${pdf}" target="_blank">[PDF]</a>
+      <a href="${scholar}" target="_blank">[Scholar]</a><br>
+      <span style="font-size: 0.9em; color: #555;">${escapeHTML(a.author)}</span><br>
+    </li>`;
+  }
+
+  function gerarHTMLArtigo(artigo, conf) {
+    const pdfUrl = `${CONFIG.pdfBasePath}/${artigo.conference_name}/${artigo.file_name}`;
+    const scholarUrl = `https://scholar.google.com/scholar?q=${encodeURIComponent(artigo.title)}`;
+    const citacoes = gerarCitacoesFormatadas(artigo, conf);
+    const autoresMeta = (artigo.author || '').split(';').map(a => `
+<meta name="citation_author" content="${escapeHTML(a.trim())}">
+<meta name="DC.Creator" content="${escapeHTML(a.trim())}">`).join('');
+
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>${escapeHTML(artigo.title)}</title>
+  <link rel="stylesheet" href="${CONFIG.cssPath}">
+  ${document.getElementById('template-article-metadata').innerHTML
+      .replace(/\$\{artigo\.(\w+)\}/g, (_, key) => escapeHTML(artigo[key]))
+      .replace(/\$\{conf\.(\w+)\}/g, (_, key) => escapeHTML(conf[key]))
+      .replace(/\$\{pdfUrl\}/g, escapeHTML(pdfUrl))
+      .replace(/\$\{author\}/g, autoresMeta)}
+</head>
+<body>
+  ${document.getElementById('template-header').innerHTML}
+  ${document.getElementById('template-article-main').innerHTML
+      .replace(/\$\{artigo\.(\w+)\}/g, (_, key) => escapeHTML(artigo[key]))
+      .replace(/\$\{conf\.(\w+)\}/g, (_, key) => escapeHTML(conf[key]))
+      .replace(/\$\{pdfUrl\}/g, escapeHTML(pdfUrl))
+      .replace(/\$\{scholarUrl\}/g, escapeHTML(scholarUrl))
+      .replace(/\$\{Citation_style_lncs\}/g, citacoes.lncs)
+      .replace(/\$\{Citation_style_ieee\}/g, citacoes.ieee)
+      .replace(/\$\{Citation_style_acm\}/g, citacoes.acm)
+      .replace(/\$\{Citation_style_sbc\}/g, citacoes.sbc)
+      .replace(/\$\{Citation_style_bib\}/g, escapeHTML(citacoes.bib))}
+  ${document.getElementById('template-conference-list').innerHTML.replace('${Conferences_list}', gerarListaConferencias())}
+  ${document.getElementById('template-footer').innerHTML}
+</body>
+</html>`;
+  }
+
+  function gerarHTMLProceedings(artigos, comite, conf) {
+    const artigosPorSessao = {};
+    artigos.forEach(a => {
+      const s = a.paper_session || 'General';
+      (artigosPorSessao[s] ||= []).push(a);
+    });
+
+    const comitePorSessao = {};
+    comite.forEach(m => {
+      const s = m.session || 'Committee';
+      (comitePorSessao[s] ||= []).push(m);
+    });
+
+    const artigosHTML = Object.entries(artigosPorSessao).map(([sessao, lista]) => `
+<h4>${sessao}</h4>
+<ul>
+${lista.map(a => gerarItemListaArtigo(a)).join('\n')}
+</ul>`).join('\n');
+
+    const comiteHTML = Object.entries(comitePorSessao).map(([sessao, lista]) => `
+<h4>${sessao}</h4>
+<ul>
+${lista.map(m => `<li>${escapeHTML(m.name)}, ${escapeHTML(m.affiliation)}, ${escapeHTML(m.country)}</li>`).join('\n')}
+</ul>`).join('\n');
+
+    const editorsHTML = (conf.editor || '').split(/,(?![^()]*\))/).map(e => `<li>${escapeHTML(e.trim())}</li>`).join('\n');
+
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>${escapeHTML(conf.conference_name)}</title>
+  <link rel="stylesheet" href="${CONFIG.cssPath}">
+  ${document.getElementById('template-proceeding-metadata').innerHTML
+      .replace(/\$\{conf\.(\w+)\}/g, (_, key) => escapeHTML(conf[key]))}
+</head>
+<body>
+  ${document.getElementById('template-header').innerHTML}
+  ${document.getElementById('template-proceeding-main').innerHTML
+      .replace(/\$\{conf\.(\w+)\}/g, (_, key) => escapeHTML(conf[key]))
+      .replace('${artigosHTML}', artigosHTML)
+      .replace('${comiteHTML}', comiteHTML)
+      .replace('${editorsHTML}', editorsHTML)}
+  ${document.getElementById('template-conference-list').innerHTML.replace('${Conferences_list}', gerarListaConferencias())}
+  ${document.getElementById('template-footer').innerHTML}
+</body>
+</html>`;
+  }
+
+
+
+  async function simularVisualizacao() {
+    const filtro = document.getElementById('conferenceFilter').value;
+    const artigo = filtro === '__all__'
+      ? articles[0]
+      : articles.find(a => a.conference_name === filtro);
+    if (!artigo) return alert("Nenhum artigo disponível para simulação.");
+
+    const conf = conferences.find(c => c.conference_name === artigo.conference_name) || {};
+    const htmlArtigo = gerarHTMLArtigo(artigo, conf);
+    const previewArticleFrame = document.getElementById("previewArticleFrame");
+    previewArticleFrame.src = URL.createObjectURL(new Blob([htmlArtigo], { type: 'text/html' }));
+    previewArticleFrame.style.display = 'block';
+
+    const artigosConf = articles.filter(a => a.conference_name === artigo.conference_name);
+    const comiteConf = committee.filter(c => c.conference_name === artigo.conference_name);
+    const htmlProceedings = gerarHTMLProceedings(artigosConf, comiteConf, conf);
+    const previewProceedingsFrame = document.getElementById("previewProceedingsFrame");
+    previewProceedingsFrame.src = URL.createObjectURL(new Blob([htmlProceedings], { type: 'text/html' }));
+    previewProceedingsFrame.style.display = 'block';
+  }
+
+  async function gerarEzipar() {
+    const zip = new JSZip();
+    const filtro = document.getElementById('conferenceFilter').value;
+    const artigosFiltrados = filtro === '__all__'
+      ? articles
+      : articles.filter(a => a.conference_name === filtro);
+
+    const grouped = {};
+    artigosFiltrados.forEach(a => {
+      if (!grouped[a.conference_name]) grouped[a.conference_name] = [];
+      grouped[a.conference_name].push(a);
+    });
+
+    for (const [confName, artigos] of Object.entries(grouped)) {
+      const conf = conferences.find(c => c.conference_name === confName) || {};
+      const comite = committee.filter(c => c.conference_name === confName);
+      const folder = zip.folder(`${CONFIG.proceedingsBasePath}/${confName}`);
+      for (const artigo of artigos) {
+        const html = gerarHTMLArtigo(artigo, conf);
+        folder.file(`wer${artigo.id}.html`, html);
+      }
+      const proceedingsHTML = gerarHTMLProceedings(artigos, comite, conf);
+      folder.file(`${confName}.html`, proceedingsHTML);
+    }
+
+    const blob = await zip.generateAsync({ type: "blob" });
+    saveAs(blob, "WERpapers_HTML.zip");
+  }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+/* static/styles.css */
+
+/*variáveis para cores*/
+:root {
+    --background-header: #001845; /*dark-blue1 */
+    --background-footer: #001845; /*dark-blue1 */
+    --background-body: #F4F7F9; /*light-gray*/
+    
+    --text-body: #1D3557; /*berkeley-blue*/
+    --text-header-footer: #FFF;
+
+    --links-header: #FFF;
+    --links-footer: #FFF;
+    --links-header-hover: #0073E6;
+    --links-footer-hover: #0073E6;
+    --links-header-visited: #FFF;
+    --links-footer-visited: #FFF;
+
+    --links-body: #0073E6; 
+    --links-body-hover: #7DBFFF;
+    --links-body-visited: #7DBFFF;
+
+    --title-h2: #EA7278; /*dry pink*/
+    --title-h1: #E63946; /*red-pantone*/
+}
+
+body {
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-body);
+    color: var(--text-body);
+}
+
+/* Estilo para links em geral */
+a {
+    color: var(--links-body);    
+}
+
+/* Estilo para links em destaque ou hover */
+a:hover {
+    color:  var(--links-body-hover); /* Azul claro para destacar no hover */
+}
+
+a:visited {
+    color: var(--links-body-visited); /*   Azul claro  */
+}
+
+header {
+    background-color: var(--background-header);
+    /*height: 40px;*/
+    margin: 0;
+    color: var(--text-header-footer);
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; 
+}
+
+.logo {
+    width: 190px;
+}
+/* para o caso de não usar uma figura como logo, mas um texto*/
+.logo a {
+    color: var(--links-header);
+    text-decoration: none;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-left: 20px;
+}
+
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--links-header);
+    /*font-weight: bold;*/
+    font-size: 1em;
+}
+
+nav a:hover {
+  color: var(--links-header-hover); 
+}
+
+nav a:visited {
+  color: var(--links-header-visited); 
+}
+
+section {
+    margin-left: 10vw;
+    margin-right: 10vw;
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+li {
+   margin-bottom: 5px; /* Adicionar espaçamento entre linhas */
+}
+
+h1{
+   color: var(--title-h1);  
+}
+h2{
+   color: var(--title-h2); 
+}
+
+h1,h2,h3,h4 {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+/* estilo aplicado em index.html a lista das edições do WER - colocando os itens de uma lista uma ao lado do outro */
+.menu-links {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none; /* Remover bullets */
+    padding: 0; /* Remover padding padrão */
+}
+
+.menu-links li {
+    margin-right: 20px;
+    margin-bottom: 5px; /* Adicionar espaçamento entre linhas */
+}
+
+.menu-links a {
+    text-decoration: none;
+}
+
+.title {
+    margin-bottom: 0px;
+    margin-top: 8px;
+}
+
+.author {
+    list-style-type: none; /* Remover bullets */
+    font-style: italic;
+    margin-top: 0px;
+}
+
+
+/* estilo aplicado em edition.html às info do proceedings - removendo os bullets dos itens de uma lista*/
+.edition-info .editors {
+    font-size: 0.9em;
+    list-style-type: none; /* Remover bullets */
+    padding: 0; /* Remover identação/padding padrão */
+    margin-top: 5px;
+}
+
+.edition-info .editors li {
+    margin-right: 0;
+    margin-bottom: 5px; /* Adicionar espaçamento entre linhas */
+    
+}
+
+/*span{
+    font-weight: bold;
+}*/
+
+footer {
+    background-color: var(--background-footer);
+    color: var(--text-header-footer);
+    /*text-align: center;*/
+    /*padding: 1em;    */
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer-logo a {
+    /*font-family: 'Arial', sans-serif;  Fonte da logo */
+    font-size: 1.3em;
+    font-weight: bold;
+    color: var(--links-footer);
+    text-decoration: none;
+}
+
+.footer-menu {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+
+.footer-menu li {
+  display: inline;
+}
+
+.footer-menu a {
+  text-decoration: none;
+  color: var(--links-footer); /* Cor dos links */
+  /*font-family: 'Arial', sans-serif;*/
+  font-size: 14px;
+}
+
+.footer-menu a:hover {
+  color: var(--links-footer-hover); /* Cor do hover dos links */
+}
+
+.footer-menu a:visited {
+  color: var(--links-footer-visited); /* Cor do hover dos links */
+}
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header .logo {
+        margin-bottom: 6px; /* Espaçamento entre logo e menu */
+    }
+
+    header nav ul {
+        justify-content: center;
+    }
+
+    nav ul {
+        flex-wrap: nowrap; /* Garante que fique em linha mesmo em telas pequenas */
+        overflow-x: auto;  /* Permite rolagem horizontal se necessário */
+        gap: 10px;         /* Espaçamento entre itens do menu */
+    }
+
+    nav ul li {
+        margin-right: 0;
+    }
+}
