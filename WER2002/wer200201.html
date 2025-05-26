@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados</title>
+  <link rel="stylesheet" href="https://werpapers.dimap.ufrn.br/styles.css">
+  
+<meta name="citation_title" content="Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados">
+
+<meta name="citation_author" content="L.A. Martins">
+<meta name="DC.Creator" content="L.A. Martins">
+<meta name="citation_author" content="G.S. Rangel">
+<meta name="DC.Creator" content="G.S. Rangel">
+<meta name="citation_author" content="D.J. Nunes">
+<meta name="DC.Creator" content="D.J. Nunes">
+<meta name="citation_publication_date" content="2002">
+<meta name="citation_language" content="en">
+<meta name="citation_doi" content="">
+<meta name="citation_conference_title" content="WER2002 - 5th Workshop on Requirements Engineering, Valencia - Espanha">
+<meta name="citation_issn" content="2675-0066">
+<meta name="citation_isbn" content="84-96023-01-X">
+<meta name="citation_keywords" content="">
+<meta name="citation_pdf_url" content="https://werpapers.dimap.ufrn.br/papers/WER2002/martins.pdf">
+<meta name="citation_section" content="">
+<meta name="DC.Title" content="Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados" lang="en">
+<meta name="DC.Title" content="Specification Integration Model: Transforming Use Cases into Abstract Data Types" lang="en">
+<meta name="DC.Date" content="2002">
+<meta name="DC.Language" content="en">
+<meta name="DC.Identifier" content="">
+<meta name="DC.Source" content="WER2002 - ">
+<meta name="DC.Subject" content="" lang="en">
+<meta name="DC.Subject" content="" lang="en">
+<meta name="DC.Description" content="Durante  o  processo  de  desenvolvimento  de  software,  o  sistema  é  especificado em diversos formatos e linguagens. No contexto da engenharia de  requisitos,  o  sistema  é  especificado  através  de  representações  meramente  informais ou semi-formais, pois um dos objetivos nesta fase é a comunicação  com  o  cliente  da  aplicação,  por  isso  a  necessidade  de  formatos  de  representação  intuitivos  e  não  formais.  A medida  que  o  processo  avança,  o  ideal seria a transformação das especificação informais e/ou semi-formais em  representações  formais,  baseadas  em  modelos  matemáticos,  com  sintaxe  e  semântica  bem  definidas,  o  que  possibilita  a  verificação  automatizada  das  especificações e o projeto formal do software. Dessa forma, a tendência seria a  redução de erros e inconsistências nas especificações, reduzindo o tempo e os  custos do projeto. Para atingir tal meta, é necessário uma metodologia eficiente  para  garantir  a  passagem  correta  entre  especificações  de  requisitos  e  especificações formais. Este artigo trata exatamente deste problema, propondo  um modelo  de  integração  composto  por uma metodologia  e  um  conjunto  de  heurísticas,  que  combina  use  cases  (modelo  de  especificação  semi-formal  orientado  ao  cliente),  com  tipos abstratos de dados  (modelo de  especificação  algébrica  orientado  ao  sistema).  Para  validar  a  proposta,  é  apresentado  um  estudo de caso ao final do artigo. " lang="en">
+<meta name="DC.Description" content="During the software development process, the system is specified in several formats and languages. In the context of requirements engineering, the system is specified through merely informal or semi-formal representations, since one of the objectives in this phase is communication with the application client, hence the need for intuitive and non-formal representation formats. As the process progresses, the ideal would be to transform informal and/or semi-formal specifications into formal representations, based on mathematical models, with well-defined syntax and semantics, which enables the automated verification of specifications and the formal design of the software. In this way, the tendency would be to reduce errors and inconsistencies in specifications, reducing project time and costs. To achieve this goal, an efficient methodology is needed to ensure the correct transition between requirements specifications and formal specifications. This article addresses exactly this problem, proposing an integration model composed of a methodology and a set of heuristics, which combines use cases (client-oriented semi-formal specification model) with abstract data types (system-oriented algebraic specification model). To validate the proposal, a case study is presented at the end of the article." lang="en">
+<meta name="DC.Format" content="application/pdf">
+<meta name="DC.Relation" content="https://werpapers.dimap.ufrn.br/papers/WER2002/martins.pdf">
+  
+</head>
+<body>
+  
+<header>
+  <div class="logo">
+    <a href="index.html"><img src="images/WERPapers_h.png" alt="WERpapers Logo" class="logo"></a>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/guidelines.html">Guidelines</a></li>
+      <li><a href="/committee.html">Masthead</a></li>
+      <li><a target="_blank" href="https://dblp.org/db/conf/wer/index.html">DBLP</a></li>
+    </ul>
+  </nav>
+</header>
+  
+  
+<section class="paper_details">
+  <h2>WER2002 - 5th Workshop on Requirements Engineering, Valencia - Espanha</h2>
+  <h3>Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados</h3>
+  <p class="author">L.A. Martins; G.S. Rangel; D.J. Nunes</p>
+  <p></p>
+  <p><a target="_blank" href="https://werpapers.dimap.ufrn.br/papers/WER2002/martins.pdf">PDF</a> <a target="_blank" href="https://scholar.google.com/scholar?q=Modelo%20de%20Integra%C3%A7%C3%A3o%20de%20Especifica%C3%A7%C3%B5es%3A%20Transforma%C3%A7%C3%A3o%20de%20Use%20Cases%20em%20Tipos%20Abstratos%20de%20Dados">Scholar</a></p>
+  <h4>Abstract</h4>
+  <p class="abstract">Durante  o  processo  de  desenvolvimento  de  software,  o  sistema  é  especificado em diversos formatos e linguagens. No contexto da engenharia de  requisitos,  o  sistema  é  especificado  através  de  representações  meramente  informais ou semi-formais, pois um dos objetivos nesta fase é a comunicação  com  o  cliente  da  aplicação,  por  isso  a  necessidade  de  formatos  de  representação  intuitivos  e  não  formais.  A medida  que  o  processo  avança,  o  ideal seria a transformação das especificação informais e/ou semi-formais em  representações  formais,  baseadas  em  modelos  matemáticos,  com  sintaxe  e  semântica  bem  definidas,  o  que  possibilita  a  verificação  automatizada  das  especificações e o projeto formal do software. Dessa forma, a tendência seria a  redução de erros e inconsistências nas especificações, reduzindo o tempo e os  custos do projeto. Para atingir tal meta, é necessário uma metodologia eficiente  para  garantir  a  passagem  correta  entre  especificações  de  requisitos  e  especificações formais. Este artigo trata exatamente deste problema, propondo  um modelo  de  integração  composto  por uma metodologia  e  um  conjunto  de  heurísticas,  que  combina  use  cases  (modelo  de  especificação  semi-formal  orientado  ao  cliente),  com  tipos abstratos de dados  (modelo de  especificação  algébrica  orientado  ao  sistema).  Para  validar  a  proposta,  é  apresentado  um  estudo de caso ao final do artigo. </p>
+</section>
+<hr>
+<section class="links">
+  <h5>How to cite</h5>
+  <ul>
+    <li><strong>LNCS - </strong>L. Martins, G. Rangel, D. Nunes: <i>Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados</i>. In: Proceedings of the WER2002-5th Workshop on Requirements Engineering, Valencia - Espanha, 2002. </li>
+    <li><strong>IEEE - </strong>L. Martins, G. Rangel, D. Nunes, 'Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados', WER2002-5th Workshop on Requirements Engineering, Valencia - Espanha, 2002. </li>
+    <li><strong>ACM - </strong>Martins, L., Rangel, G., Nunes, D.. 2002. Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados. In WER2002-5th Workshop on Requirements Engineering, Valencia - Espanha. </li>
+    <li><strong>SBC - </strong>MARTINS, L.a.; RANGEL, G.s.; NUNES, D.j.. Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados. In: WER2002-5th Workshop on Requirements Engineering, Valencia - Espanha, 2002. </li>
+    <li><strong>BIB - </strong><pre>@inproceedings{wer200201,
+  author = {Martins, L. and Rangel, G. and Nunes, D.},
+  title = {Modelo de Integração de Especificações: Transformação de Use Cases em Tipos Abstratos de Dados},
+  booktitle = {Proceedings of the WER2002-5th Workshop on Requirements Engineering, Valencia - Espanha},
+  year = {2002},
+  issn = {2675-0066},
+  isbn = {84-96023-01-X},
+  doi = {}
+}</pre></li>
+  </ul>
+</section>
+  
+  
+    <hr> 
+    <section class="editions">
+      <h3>WER Editions</h3>
+      <ul id="wer-editions-list" class="menu-links">
+        <li><a href="..//WER1998/WER1998.html">WER1998</a></li>
+<li><a href="..//WER1999/WER1999.html">WER1999</a></li>
+<li><a href="..//WER2000/WER2000.html">WER2000</a></li>
+<li><a href="..//WER2001/WER2001.html">WER2001</a></li>
+<li><a href="..//WER2002/WER2002.html">WER2002</a></li>
+<li><a href="..//WER2003/WER2003.html">WER2003</a></li>
+<li><a href="..//WER2004/WER2004.html">WER2004</a></li>
+<li><a href="..//WER2005/WER2005.html">WER2005</a></li>
+<li><a href="..//WER2006/WER2006.html">WER2006</a></li>
+<li><a href="..//WER2007/WER2007.html">WER2007</a></li>
+<li><a href="..//WER2008/WER2008.html">WER2008</a></li>
+<li><a href="..//WER2009/WER2009.html">WER2009</a></li>
+<li><a href="..//WER2010/WER2010.html">WER2010</a></li>
+<li><a href="..//WER2011/WER2011.html">WER2011</a></li>
+<li><a href="..//WER2012/WER2012.html">WER2012</a></li>
+<li><a href="..//WER2013/WER2013.html">WER2013</a></li>
+<li><a href="..//WER2014/WER2014.html">WER2014</a></li>
+<li><a href="..//WER2015/WER2015.html">WER2015</a></li>
+<li><a href="..//WER2016/WER2016.html">WER2016</a></li>
+<li><a href="..//WER2017/WER2017.html">WER2017</a></li>
+<li><a href="..//WER2018/WER2018.html">WER2018</a></li>
+<li><a href="..//WER2019/WER2019.html">WER2019</a></li>
+<li><a href="..//WER2020/WER2020.html">WER2020</a></li>
+<li><a href="..//WER2021/WER2021.html">WER2021</a></li>
+<li><a href="..//WER2022/WER2022.html">WER2022</a></li>
+<li><a href="..//WER2023/WER2023.html">WER2023</a></li>
+<li><a href="..//WER2024/WER2024.html">WER2024</a></li>
+<li><a href="..//WER2025/WER2025.html">WER2025</a></li>
+      </ul>
+  </section>
+  
+<footer>
+  <hr> 
+  <div class="footer-content">
+    <div class="footer-logo"><a href="index.html" class="logo">WERpapers</a></div>
+    <ul class="footer-menu">
+      <li><a href="/index.html">Home</a></li>
+      <li><a href="/committee.html">Masthead</a></li>
+      <li><a href="/guidelines.html">Guidelines</a></li>
+      <li><a href="https://dblp.org/db/conf/wer/index.html">DBLP</a></li>
+      <li><a href="mailto:papers.wer@gmail.com">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+  
+</body>
+</html>
